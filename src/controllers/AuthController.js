@@ -15,7 +15,6 @@ const {
   Insert,
   FindOne,
   Find,
-  CompressImageAndUpload,
   FindAndUpdate,
   Delete,
   HandleSuccess,

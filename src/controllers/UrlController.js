@@ -8,7 +8,6 @@ const {
   IsExists,
   Insert,
   Find,
-  CompressImageAndUpload,
   FindAndUpdate,
   Delete,
   HandleSuccess,

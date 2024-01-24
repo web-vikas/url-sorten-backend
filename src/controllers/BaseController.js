@@ -1,5 +1,5 @@
 const fs = require("fs");
-const sharp = require("sharp");
+// const sharp = require("sharp");
 const { public_image_url } = require("../config/vars");
 /*
  * Database CURD methods below
@@ -172,26 +172,6 @@ const Delete = async ({ model, where }) => {
   }
 };
 
-const CompressImageAndUpload = async (image, path = public_image_url) => {
-  try {
-    let time = new Date().getTime();
-    let imagePath = path + time + ".jpg";
-    //Any error from sharp will automatically handle in catch block returning false.
-    let imageInfo = await sharp(image.data)
-      .jpeg({
-        quality: 95,
-        chromaSubsampling: "4:4:4",
-      })
-      .toFile(imagePath);
-    return {
-      path: imagePath.replace(/public/g, ""),
-      size: imageInfo.size,
-    };
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
-};
 
 const DeleteFile = async (filepath) => {
   try {
@@ -309,7 +289,6 @@ exports.Delete = Delete;
 exports.FindAndUpdate = FindAndUpdate;
 exports.UpdateMany = UpdateMany;
 exports.Aggregate = Aggregate;
-exports.CompressImageAndUpload = CompressImageAndUpload;
 exports.DeleteFile = DeleteFile;
 
 exports.ValidateEmail = ValidateEmail;
