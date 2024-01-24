@@ -23,7 +23,6 @@
     "moment": "^2.29.4",
     "mongoose": "^6.3.3",
     "nodemailer": "^6.7.5",
-    "sharp": "^0.33.2",
     "socket.io": "^4.7.4"
   },
   "devDependencies": {
