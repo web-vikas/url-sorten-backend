@@ -5,20 +5,12 @@ const { Mail } = require("../services");
 const { Mongoose, User, URL } = require("../models");
 
 const {
-  IsExists,
   Insert,
   Find,
   FindAndUpdate,
-  Delete,
   HandleSuccess,
   HandleError,
   HandleServerError,
-  Aggregate,
-  ValidateEmail,
-  PasswordStrength,
-  ValidateAlphanumeric,
-  ValidateLength,
-  ValidateMobile,
   GeneratePassword,
   IsExistsOne,
   isValidUrl,
@@ -30,7 +22,11 @@ module.exports = {
     try {
       const { full_url } = req.body;
       const { _id, limit } = req.user;
-      if (!isValidUrl(full_url)) return HandleError(res, "Invalid URL");
+      if (
+        !isValidUrl(full_url) ||
+        full_url.startsWith("https://hit-go.vercel.app/")
+      )
+        return HandleError(res, "Invalid URL");
       if (limit <= 0) return HandleError(res, "You Are Out Of Limit.");
       const maxLength = 4;
       let checkIsExist = null;
@@ -43,11 +39,11 @@ module.exports = {
         });
       } while (checkIsExist);
 
-      const inserNewURL = await Insert({
+      const insertNewURL = await Insert({
         model: URL,
         data: { user: _id, full_url, id: urlId },
       });
-      if (!inserNewURL) return HandleError(res, "Failed To Sorten The URL");
+      if (!insertNewURL) return HandleError(res, "Failed To Shorten The URL");
 
       const updatedUser = await FindAndUpdate({
         model: User,
@@ -55,7 +51,7 @@ module.exports = {
         update: { limit: limit - 1 },
       });
       if (!updatedUser) return HandleError(res, "Failed To change Limit!");
-      return HandleSuccess(res, inserNewURL);
+      return HandleSuccess(res, insertNewURL);
     } catch (err) {
       HandleServerError(res, req, err);
     }
