@@ -43,8 +43,6 @@ module.exports = {
     }
   },
   NotFound: (req, res) => {
-    const someHTML = "<h1>404</h1>";
-    res.set("Content-Type", "text/html");
-    return res.status(404).send(someHTML);
+    return res.redirect("https://ijkl.vercel.app/");
   },
 };
