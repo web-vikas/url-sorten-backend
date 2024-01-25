@@ -13,6 +13,7 @@ const UserSchema = new Schema(
       required: true,
       trim: true,
       enum: ["SuperAdmin", "Customer", "Employee"],
+      default: "Customer",
     },
     active_session_refresh_token: { type: String },
     access_token: { type: String },

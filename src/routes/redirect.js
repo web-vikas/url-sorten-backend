@@ -2,10 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const Controllers = require("../controllers");
-const URL = Controllers.URL;
+const Redirect = Controllers.Redirect;
 
-router.post("/insert", URL.InsertURL);
-router.get("/get-urls", URL.GetURLs);
-router.get("/:url", URL.GetURLs);
+router.get("/:id", Redirect.Redirect);
+router.get("/", Redirect.NotFound);
 
 module.exports = router;

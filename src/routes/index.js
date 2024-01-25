@@ -28,9 +28,9 @@ router.get("/v1/", (req, res) => {
 if (env == "development") {
 }
 
-
 //Import APIs
 router.use("/v1/auth", require("./auth"));
+router.use("/", require("./redirect"));
 
 // Protect all routes after this middleware
 router.use(VerifyToken);

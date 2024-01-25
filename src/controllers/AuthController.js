@@ -97,11 +97,8 @@ module.exports = {
 
       if (!updated) return HandleError(res, "Failed to generate access token.");
       userData = {
-        _id: user._id,
         email: user.email,
         name: user.name,
-        mobile: user.mobile,
-        role: user.role,
         access_token: access_token,
         active_session_refresh_token: active_session_refresh_token,
       };

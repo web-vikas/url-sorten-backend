@@ -30,7 +30,7 @@ module.exports = {
     try {
       const { full_url } = req.body;
       const { _id, limit } = req.user;
-      if (!isValidUrl(full_url)) return HandleError(res, "Inavlid URL");
+      if (!isValidUrl(full_url)) return HandleError(res, "Invalid URL");
       if (limit <= 0) return HandleError(res, "You Are Out Of Limit.");
       const maxLength = 4;
       let checkIsExist = null;
@@ -70,7 +70,11 @@ module.exports = {
       perPage = parseInt(perPage) || 10;
 
       const skip = (page - 1) * perPage;
-      const totalRecords = await URL.countDocuments().lean().exec();
+      const totalRecords = await URL.countDocuments({
+        user: Mongoose.Types.ObjectId(_id),
+      })
+        .lean()
+        .exec();
       const data = await Find({
         model: URL,
         where: { user: Mongoose.Types.ObjectId(_id) },
@@ -86,6 +90,20 @@ module.exports = {
         totalRecords: totalRecords,
         totalPages: totalPages,
       });
+    } catch (err) {
+      HandleServerError(res, req, err);
+    }
+  },
+  GetURL: async (req, res, next) => {
+    try {
+      const { id } = req.param;
+
+      const data = await FindOne({
+        model: URL,
+        where: { id },
+      });
+
+      return HandleSuccess(res, data);
     } catch (err) {
       HandleServerError(res, req, err);
     }
