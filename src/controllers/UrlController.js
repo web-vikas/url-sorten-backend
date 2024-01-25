@@ -20,7 +20,7 @@ const {
 module.exports = {
   InsertURL: async (req, res, next) => {
     try {
-      const { full_url } = req.body;
+      const { full_url, custom_endpoint = "" } = req.body;
       const { _id, limit } = req.user;
       if (
         !isValidUrl(full_url) ||
@@ -31,6 +31,20 @@ module.exports = {
       const maxLength = 4;
       let checkIsExist = null;
       let urlId = null;
+      if (custom_endpoint != "") {
+        const checkIsExist = await IsExistsOne({
+          model: URL,
+          where: { id: custom_endpoint },
+        });
+        if (checkIsExist) {
+          return HandleError(res, "EndPoint Already Exist.");
+        }
+        const insertNewURL = await Insert({
+          model: URL,
+          data: { user: _id, full_url, id: custom_endpoint },
+        });
+        return HandleSuccess(res, insertNewURL);
+      }
       do {
         urlId = GeneratePassword(maxLength);
         checkIsExist = await IsExistsOne({
